@@ -16,7 +16,7 @@
 \hypersetup{
 bookmarks=true,
 unicode=true,
-pdftitle={Jonathan Bown}
+pdftitle={Jonathan Bown-Amin Hashemi}
 }
 
 
@@ -50,7 +50,7 @@ pdftitle={Jonathan Bown}
 % --------------------------------------------------------------
 
 \title{Solutions Manual for Gregory F. Lawler's \\ \emph{Introduction to Stochastic Processes}}%replace X with the appropriate number
-\author{Jonathan Bown}
+\author{Jonathan Bown - Amin Hashemi}
 \date{}
 
 \maketitle
@@ -253,10 +253,137 @@ that $lim_{n \to \infty} P_{n}(5, R_{1}) = \frac{6}{11}$. Combining it with (2) 
 \chapter{Countable Markov Chains}
 
 \begin{problem}{2.1}
+Consider the queueing model (Example 3 of Section 2.1). For which values of $p, q$ is the chain null recurrent, positive recurrent, transient? For the positive recurrent case give the limiting probability distribution $\pi$. What is the
+average length of the queue in equilibrium? For the transient case, give $\alpha(x) =$ the probability starting at x of ever reaching state 0.
 \end{problem}
 \begin{solution}
+The chain is positive Recurrent if $p < q$, null recurrent if $p = q$, and transient if $p > q$.
 \end{solution}
 
+
+\begin{problem}{2.2}
+Consider the following Markov chain with state space $S = \{0, 1, \ldots\}$. A sequence of positive numbers $p_1, p_2, \ldots$ is given with
+\[
+\sum_{i=1}^{\infty} p_i = 1
+\]
+Whenever the chain reaches state $0$ it chooses a new state according to the $p_i$. Whenever the chain is at a state other than $0$ it proceeds deterministically, one step at a time, toward $0$. In other words, the chain has transition probability
+\[
+p(x, x-1) = 1, \quad x > 0,
+\]
+\[
+p(0, x) = p_x, \quad x > 0.
+\]
+
+This is a recurrent chain since the chain keeps returning to $0$. Under what conditions on the $p_x$ is the chain positive recurrent? In this case, what is the limiting probability distribution $\pi$? [Hint: it may be easier to compute $\mathbb{E}(T)$ directly where $T$ is the time of first return to $0$ starting at $0$.]
+\end{problem}
+\begin{solution}
+Let $T$ be the return time to state $0$ starting at $0$. Then, for every $x$, $\mathbb{P}(T = x) = p_x$ and so
+\[
+\mathbb{E}[T] = \sum_{x=1}^{\infty} x p_x.
+\]
+Therefore, state $0$ is positive recurrent if and only if
+\[
+\sum_{x=1}^{\infty} x p_x < \infty.
+\]
+
+In order to compute stationary distribution $\pi$, note that we have the following equations,
+\[
+\text{for } i > 0, \quad \pi_i = \pi_{i+1} + p_i \pi_0
+\]
+\[
+\pi_0 = \pi_1
+\]
+\[
+\pi_0 + \pi_1 + \cdots = 1
+\]
+
+Solving these gives
+\[
+\pi_0 = \left( \sum_{x=1}^{\infty} x p_x \right)^{-1},
+\]
+\[
+\pi_i = \pi_0 \sum_{x=i}^{\infty} p_x, \quad \text{for } i > 0.
+\]
+\end{solution}
+
+\begin{problem}{2.3}
+Consider the Markov chain with state space $S = \{0, 1, 2, \ldots\}$ and transition probabilities:
+\[
+p(x, x+1) = 2/3; \qquad p(x, 0) = 1/3.
+\]
+Show that the chain is positive recurrent and give the limiting probability.
+\end{problem}
+\begin{solution}
+Since the chain is irreducible (why?), in order to show that it is positive recurrent, we need to verify that it admits a stationary (probability) distribution $\pi$.
+
+The distribution $\pi$ must satisfy
+\[
+\pi(0) = \sum_{j=0}^{\infty} \pi(j) \frac{1}{3} = \frac{1}{3} \sum_{x=0}^{\infty} \pi(x) = \frac{1}{3}
+\]
+and for $j \geq 1$:
+\[
+\pi(j) = \pi(j-1) \frac{2}{3}
+\]
+This gives
+\[
+\pi(j) = \left(\frac{2}{3}\right)^j \pi(0) = \frac{1}{3} \left(\frac{2}{3}\right)^j
+\]
+
+Since a stationary distribution exists, the chain is positive recurrent. Finally, note that the chain is aperiodic as well (there is a cycle of length one from $0$ to $0$). So, for every $i, j$
+\[
+\lim_{n \to \infty} p_n(i, j) = \pi(j) = \frac{1}{3} \left(\frac{2}{3}\right)^j
+\]
+\end{solution}
+
+
+\begin{problem}{2.5}
+Let $X_n$ be the Markov chain with state space $\mathbb{Z}$ and transition probability
+\[
+p(n, n+1) = p, \quad p(n, n-1) = 1-p,
+\]
+where $p > 1/2$. Assume $X_0 = 0$.
+
+\begin{enumerate}
+    \item[(a)] Let $Y = \min\{ X_0, X_1, \ldots \}$. What is the distribution of $Y$?
+    \item[(b)] For positive integer $k$, let $T_k = \min\{ n : X_n = k \}$ and let $e(k) = \mathbb{E}[T_k]$. Explain why $e(k) = k e(1)$.
+    \item[(c)] Find $e(1)$. (Hint: (b) might be helpful.)
+    \item[(d)] Use (c) to give another proof that $e(1) = \infty$ if $p = 1/2$.
+\end{enumerate}
+\end{problem}
+\begin{solution}
+(a) Let $\mathbb{P}(Y \leq -k)$ be the probability that the minimum is at most $-k$. This is equal to the probability that the chain ever reaches $-k$, which for a biased random walk is:
+\[
+\mathbb{P}(T_{-k} < \infty \mid X_0 = 0) = \mathbb{P}(T_{-1} < \infty \mid X_0 = 0)^k = \left( \frac{1-p}{p} \right)^k.
+\]
+Thus,
+\[
+\mathbb{P}(Y = -k) = \mathbb{P}(Y \leq -k) - \mathbb{P}(Y \leq -(k+1)) = \left( \frac{1-p}{p} \right)^k - \left( \frac{1-p}{p} \right)^{k+1}.
+\]
+
+(b) Observe that
+\[
+e(k) = \mathbb{E}[T_k] = \mathbb{E}[T_1 + T_2 - T_1 + \ldots + T_k - T_{k-1}] = \sum_{j=1}^k \mathbb{E}[T_j - T_{j-1}].
+\]
+By translation invariance, $\mathbb{E}[T_j - T_{j-1}] = e(1)$ for all $j$, so $e(k) = k \cdot e(1)$.
+
+(c) From state $0$, the chain moves to $1$ with probability $p$ and to $-1$ with probability $1-p$. So,
+\[
+e(1) = 1 + p \cdot 0 + (1-p) \cdot \mathbb{E}[T_1 \mid X_1 = -1].
+\]
+From $-1$, the chain must first return to $0$, then reach $1$, so:
+\[
+\mathbb{E}[T_1 \mid X_1 = -1] = e(1) + \mathbb{E}[T_0 \mid X_0 = -1] = e(1) + e(1) = 2e(1).
+\]
+Hence:
+\[
+e(1) = 1 + (1-p)(2e(1)) \implies e(1)(1 - 2(1-p)) = 1 \implies e(1) = \frac{1}{2p-1}.
+\]
+
+(d) If $p = \frac{1}{2}$, then:
+\[
+e(1) = \frac{1}{2p-1} = \frac{1}{0} = \infty.
+\]
+\end{solution}
 
 
 \chapter{Continuous-Time Markov Chains}
@@ -274,9 +401,155 @@ that $lim_{n \to \infty} P_{n}(5, R_{1}) = \frac{6}{11}$. Combining it with (2) 
 \begin{problem}{4.1}
 \end{problem}
 \begin{solution}
+
+To solve this, we use the convex function rule. Interpolating linearly we get:
+
+\[
+\begin{array}{c|ccccccccccc}
+x & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+\hline
+f(x) & 0 & 2 & 4 & 3 & 10 & 0 & 6 & 4 & 3 & 3 & 0 \\
+v(x) & 0 & 2.5 & 5 & 7.5 & 10 & 8.6 & 7.2 & 5.8 & 4.4 & \mathbf{3} & 0
+\end{array}
+\]
+
+The optimal stopping rule is to stop at \( x = 4, 9 \) and continue otherwise (if you can).
 \end{solution}
 
 
+\begin{problem}{4.2}
+\end{problem}
+\begin{solution}
+
+\begin{itemize}
+  \item[(a)] 
+  This is just
+  \[
+  E = \sum p(x)f(x) = \frac{210}{36} = \frac{35}{6} \approx 5.8333
+  \]
+
+  \item[(b)] The question itself is a hint. Instead of trying to compute \( v_n(x) \) we compute the expected payoff \( E_n \) for \( v_n \).
+
+  \[
+  E_1 = \sum_{x \ne 7} p(x) \cdot 12 = 10
+  \]
+
+  Given \( E_n \), we can compute \( E_{n+1} \) by
+
+  \[
+  E_{n+1} = \sum_{x \ne 7} p(x) \cdot \max(f(x), E_n)
+  \]
+
+  which gives:
+
+  \[
+  \begin{aligned}
+    E_2 &= 8.4444 \\
+    E_3 &= 7.4691 \\
+    E_4 &= 7.001 \\
+    E_5 &= 6.806 \\
+    E_6 &= 6.7247
+  \end{aligned}
+  \]
+
+  Once you realize that the optimal stopping time is to stop when you get more than 7, then you can calculate the expected value:
+
+  \[
+  \mathbb{E}(f(X_T)) = \frac{140}{21} \approx 6.66667
+  \]
+  Since this is more than 6, the strategy is correct.
+
+\end{itemize}
+\end{solution}
+
+
+\begin{problem}{4.6}
+\end{problem}
+\begin{solution}
+\begin{itemize}
+ \item[(a)] 
+The algorithm is to find a descending sequence of superharmonics \( u_1, u_2, \ldots \) converging to \( v(x) \), then determine the strategy from this decimal approximation to \( v(x) \) and then from that to determine the precise formula for \( v(x) \). Since this problem is nonstochastic, the value function is determined by its expected value
+\[
+E = \sum p_x v(x)
+\]
+
+We start with the very optimistic function:
+\[
+u_1 = (0, 36, 36, 36, 36, 36)
+\]
+
+This means, if you don’t lose on the first roll, you assume that you will get the highest possible payoff (36). The average of these numbers is
+\[
+E_1 = (5/6)(36) = 30
+\]
+
+\[
+u_2(x) = \max(f(x), E_1) = (0, 30, 30, 30, 30, 36)
+\]
+with average
+\[
+E_2 = 26
+\]
+
+\[
+u_3 = (0, 26, 26, 26, 26, 36)
+\]
+\[
+E_3 = 23.3333333, \quad
+E_4 = 21.8333333, \quad
+E_5 = 21.0833333, \quad
+\ldots, \quad
+E_{25} = 20.3333369
+\]
+
+So, the winning strategy is to stop at 5 or 6 and play at 2, 3, 4. The value function is:
+\[
+v = (0, E, E, E, 25, 36)
+\]
+
+with average:
+\[
+E = \frac{3E + 25 + 36}{6} = \frac{1}{2}E + \frac{61}{6}
+\]
+
+So,
+\[
+E = \frac{61}{3} = 20\frac{1}{3}
+\]
+
+\[
+v = (0, 20\frac{1}{3}, 20\frac{1}{3}, 20\frac{1}{3}, 25, 36)
+\]
+
+The second question is a little ambiguous since it is not clear exactly what ``expected winnings’’ means. The expected winning of this game is \( E = 20\frac{1}{3} \) before you roll the first die. After you roll and get \( x \), your expected winning is given by \( v(x) \) which depends on \( x \).
+
+ \item[(b)] 
+Since you know the optimal strategy, you can skip the first steps and go to the last step. The value function is:
+\[
+v = (0, E - r, 9, 16, 25, 36)
+\]
+
+But \( E - r \) must be \( \leq 9 \), otherwise you should play at \( x = 3 \). So,
+\[
+r \geq E - 9
+\]
+
+The smallest value of \( r \) is when these are equal. So:
+\[
+v = (0, 9, 9, 16, 25, 36)
+\]
+
+with average:
+\[
+E = \frac{95}{6} = 15\frac{5}{6}
+\]
+
+Which makes:
+\[
+r = E - 9 = 6\frac{5}{6}
+\]
+\end{itemize}
+\end{solution}
 
 
 
